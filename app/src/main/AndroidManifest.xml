@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.InventoryManagementSystem"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".employee.EmployeeMyAssetsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".employee.EmployeeNearExpiryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".employee.EmployeeAssetRequestActivity"
+            android:exported="false" />
+        <activity
+            android:name=".employee.EmployeeIssueReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".manager.ManagerReportsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".manager.ManagerTeamAssetsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.AdminMaintainInventoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.AdminMaintainUsersActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.AdminReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.AdminAddItemActivity"
+            android:exported="false" />
+        <activity
+            android:name=".manager.RequestDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".manager.ManagerAcceptRequestsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".manager.ManagerDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ManagerLoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AdminLoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EmployeeLoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.AdminDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".employee.EmployeeDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LandingPageActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

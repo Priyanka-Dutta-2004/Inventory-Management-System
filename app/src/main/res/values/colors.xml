@@ -1,0 +1,46 @@
+<resources>
+
+    <!-- Primary Brand (Deep Tech Blue) -->
+    <color name="primary">#1F3A5F</color>
+    <color name="primary_dark">#162A44</color>
+
+    <!-- Background -->
+    <color name="background_light">#F5F7FA</color>
+    <color name="surface_light">#E9EEF4</color>
+
+    <!-- Accent (Innovation / Tech highlight) -->
+    <color name="accent">#2DA8D8</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#1E2933</color>
+    <color name="text_secondary">#6B7A8C</color>
+
+    <!-- Utility -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+
+    <!-- Button Gradient -->
+    <color name="btn_start">#2DA8D8</color>
+    <color name="btn_end">#1C7EA4</color>
+
+    <!-- Pressed State -->
+    <color name="btn_pressed_start">#1C7EA4</color>
+    <color name="btn_pressed_end">#155E7C</color>
+
+    <!-- Focus State -->
+    <color name="btn_focus">#3B82F6</color>
+
+    <!-- Border -->
+    <color name="btn_border">#D1D9E0</color>
+
+    <!--  Priority Colors  -->
+    <color name="low_priority">#FFEB3B</color>
+    <color name="medium_priority">#FFEB3B</color>
+    <color name="yellow">#F4B400</color>
+    <color name="success">#1F8A70</color>
+    <color name="warning">#D97706</color>
+    <color name="danger">#C2410C</color>
+    <color name="surface_white">#FCFDFE</color>
+    <color name="border_soft">#D7E0EA</color>
+
+</resources>

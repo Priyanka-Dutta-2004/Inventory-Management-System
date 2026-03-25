@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Base Text Style -->
+    <style name="Text"/>
+
+    <!-- App Title -->
+    <style name="Text.Title" parent="Text">
+        <item name="android:fontFamily">@font/cinzel_bold</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:textColor">@color/primary_dark</item>
+    </style>
+
+    <!-- Section Heading -->
+    <style name="Text.Heading" parent="Text">
+        <item name="android:fontFamily">@font/cinzel_semibold</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/primary_dark</item>
+    </style>
+
+    <!-- Normal Text -->
+    <style name="Text.Body" parent="Text">
+        <item name="android:fontFamily">@font/cinzel_regular</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/primary_dark</item>
+    </style>
+
+    <!-- Button Text -->
+    <style name="Text.Button" parent="Text">
+        <item name="android:fontFamily">@font/cinzel_medium</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!--  Card Layout  -->
+
+    <style name="Widget.Inventory.DashboardCard" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="cardBackgroundColor">@color/surface_light</item>
+        <item name="strokeColor">@color/btn_border</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+
+    <style name="ThemeOverlay" />
+
+    <style name="ThemeOverlay.Inventory" parent="ThemeOverlay" />
+
+    <style name="ThemeOverlay.Inventory.Card" parent="ThemeOverlay.Inventory">
+        <item name="cardIconColor">@color/accent</item>
+        <item name="cardTextColor">@color/text_primary</item>
+    </style>
+
+</resources>
