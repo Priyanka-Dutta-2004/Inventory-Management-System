@@ -85,6 +85,7 @@
                         android:orientation="vertical"
                         android:gravity="center">
                         <TextView
+                            android:id="@+id/myItemsValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="24"
@@ -111,6 +112,7 @@
                         android:orientation="vertical"
                         android:gravity="center">
                         <TextView
+                            android:id="@+id/requestsValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="5"
@@ -137,6 +139,7 @@
                         android:orientation="vertical"
                         android:gravity="center">
                         <TextView
+                            android:id="@+id/alertsValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="3"
@@ -347,17 +350,11 @@
                 app:layout_constraintTop_toBottomOf="@id/recentTitle">
 
                 <LinearLayout
+                    android:id="@+id/recentRequestsContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="No recent requests"
-                        android:textSize="14sp"
-                        android:textColor="@color/text_secondary"/>
 
                 </LinearLayout>
 

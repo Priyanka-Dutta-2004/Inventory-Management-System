@@ -10,6 +10,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.inventorymanagementsystem.auth.AuthApiClient
 import com.example.inventorymanagementsystem.employee.EmployeeDashboardActivity
+import com.example.inventorymanagementsystem.employee.EmployeeSessionManager
 import com.google.android.material.textfield.TextInputEditText
 
 class EmployeeLoginActivity : AppCompatActivity() {
@@ -63,6 +64,13 @@ class EmployeeLoginActivity : AppCompatActivity() {
             onSuccess = {
                 runOnUiThread {
                     loginButton.isEnabled = true
+                    EmployeeSessionManager.saveSession(
+                        context = this,
+                        userId = it.userId,
+                        name = it.name,
+                        email = it.email,
+                        role = it.role,
+                    )
                     Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
                     navigateToDashboard()
                 }

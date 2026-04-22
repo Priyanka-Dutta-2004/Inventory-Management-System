@@ -24,5 +24,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "Inventory Management System"
 include(":app")
-//include(":inventory-backend")
+include(":inventory-backend")
 

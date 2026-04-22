@@ -57,7 +57,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
                 app:strokeColor="@color/border_soft"
                 app:strokeWidth="1dp">
 
@@ -77,9 +76,10 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tvTotalAssets"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="1,240"
+                            android:text="0"
                             android:textColor="@color/primary"
                             android:textSize="20sp"
                             android:textStyle="bold" />
@@ -100,9 +100,10 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tvOverdueAssets"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="88"
+                            android:text="0"
                             android:textColor="@color/warning"
                             android:textSize="20sp"
                             android:textStyle="bold" />
@@ -123,9 +124,10 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tvMaintenanceAssets"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="27"
+                            android:text="0"
                             android:textColor="@color/accent"
                             android:textSize="20sp"
                             android:textStyle="bold" />
@@ -146,9 +148,10 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tvExpiringAssets"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="31"
+                            android:text="0"
                             android:textColor="@color/danger"
                             android:textSize="20sp"
                             android:textStyle="bold" />
@@ -168,7 +171,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
                 app:strokeColor="@color/border_soft"
                 app:strokeWidth="1dp">
 
@@ -187,10 +189,10 @@
                         android:textStyle="bold" />
 
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+                        android:layout_marginTop="16dp">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/reportTypeInput"
@@ -208,11 +210,11 @@
                         android:orientation="horizontal">
 
                         <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
-                            android:layout_weight="1"
-                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+                            android:layout_weight="1">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/reportFromDateInput"
@@ -223,11 +225,11 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
-                            android:layout_weight="1"
-                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+                            android:layout_weight="1">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/reportToDateInput"
@@ -239,10 +241,10 @@
                     </LinearLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+                        android:layout_marginTop="12dp">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/reportDepartmentInput"
@@ -290,7 +292,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 app:cardCornerRadius="14dp"
-                app:cardElevation="1dp"
                 app:strokeColor="@color/border_soft"
                 app:strokeWidth="1dp">
 
@@ -331,6 +332,7 @@
                     </LinearLayout>
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnRunInventoryUtilization"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Run" />
@@ -342,7 +344,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 app:cardCornerRadius="14dp"
-                app:cardElevation="1dp"
                 app:strokeColor="@color/border_soft"
                 app:strokeWidth="1dp">
 
@@ -383,6 +384,7 @@
                     </LinearLayout>
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnRunWarrantyExpiry"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Run" />
@@ -394,7 +396,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 app:cardCornerRadius="14dp"
-                app:cardElevation="1dp"
                 app:strokeColor="@color/border_soft"
                 app:strokeWidth="1dp">
 
@@ -435,9 +436,52 @@
                     </LinearLayout>
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnRunAuditLog"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Run" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="16dp"
+                app:strokeColor="@color/border_soft"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/reportPreviewTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Preview"
+                        android:textColor="@color/primary_dark"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/reportPreviewMeta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/reportPreviewBody"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:textColor="@color/text_primary"
+                        android:textSize="13sp"
+                        tools:text="Report rows appear here." />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>

@@ -51,28 +51,61 @@
                     android:padding="18dp">
 
                     <TextView
+                        android:id="@+id/requestTitleText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Finance onboarding kit"
                         android:textColor="@color/text_primary"
                         android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        tools:text="Finance onboarding kit" />
 
                     <TextView
+                        android:id="@+id/requestOwnerText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="Requested by Neha Patel, Finance department"
                         android:textColor="@color/text_secondary"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        tools:text="Requested by Neha Patel | neha.patel@company.com" />
 
                     <TextView
+                        android:id="@+id/requestDateText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="Requested on 20 Mar 2026"
                         android:textColor="@color/text_secondary"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        tools:text="Created on 21 Apr 2026" />
+
+                    <TextView
+                        android:id="@+id/requestNeededByText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="14sp"
+                        tools:text="Needed by 26 Apr 2026" />
+
+                    <TextView
+                        android:id="@+id/requestPriorityText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="14sp"
+                        tools:text="Priority: High" />
+
+                    <TextView
+                        android:id="@+id/requestStatusText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/button_transparent_style"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="6dp"
+                        android:textColor="@color/primary_dark"
+                        android:textStyle="bold"
+                        tools:text="Pending manager review" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -93,18 +126,52 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Justification"
+                        android:text="@string/manager_request_justification"
                         android:textColor="@color/primary_dark"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/requestJustificationText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="Four analysts are joining on 22 Mar 2026 and need standard issue laptops, docking stations, and headsets before onboarding."
                         android:textColor="@color/text_secondary"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        tools:text="Business justification goes here." />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                app:cardCornerRadius="16dp"
+                app:strokeColor="@color/border_soft"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="18dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/manager_request_history_title"
+                        android:textColor="@color/primary_dark"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/approvalHistoryText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="14sp"
+                        tools:text="No decision recorded yet." />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -119,7 +186,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="top|start"
-                    android:hint="Add approval comments"
+                    android:hint="@string/manager_request_comment_hint"
                     android:inputType="textMultiLine"
                     android:minLines="3" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -136,7 +203,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:text="Approve" />
+                    android:text="@string/manager_request_approve" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnReject"
@@ -145,7 +212,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    android:text="Reject" />
+                    android:text="@string/manager_request_reject" />
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
