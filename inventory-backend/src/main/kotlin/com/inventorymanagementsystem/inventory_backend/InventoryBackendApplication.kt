@@ -1,7 +1,6 @@
 package com.inventorymanagementsystem.inventory_backend
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.boot.runApplication
 import java.net.URI
 
@@ -26,9 +25,10 @@ fun main(args: Array<String>) {
 		println("Using database URL from env var: $key")
 
 		if (rawUrl.startsWith("jdbc:", ignoreCase = true)) {
-			SpringApplicationBuilder(InventoryBackendApplication::class.java)
-				.properties("spring.datasource.url=$rawUrl")
-				.run(*args)
+			runApplication<InventoryBackendApplication>(
+				*args,
+				"--spring.datasource.url=$rawUrl"
+			)
 			return
 		}
 
@@ -43,13 +43,12 @@ fun main(args: Array<String>) {
 			val query = uri.query?.takeIf { it.isNotBlank() }?.let { "?$it" }.orEmpty()
 			val jdbcUrl = "jdbc:postgresql://$host:$port/$database$query"
 
-			SpringApplicationBuilder(InventoryBackendApplication::class.java)
-				.properties(
-					"spring.datasource.url=$jdbcUrl",
-					"spring.datasource.username=$username",
-					"spring.datasource.password=$password"
-				)
-				.run(*args)
+			runApplication<InventoryBackendApplication>(
+				*args,
+				"--spring.datasource.url=$jdbcUrl",
+				"--spring.datasource.username=$username",
+				"--spring.datasource.password=$password"
+			)
 			return
 		}
 
@@ -65,13 +64,12 @@ fun main(args: Array<String>) {
 	if (pgHost != null && pgDatabase != null && pgUser != null) {
 		val jdbcUrl = "jdbc:postgresql://$pgHost:$pgPort/$pgDatabase"
 		println("Using database settings from PGHOST/PGPORT/PGDATABASE/PGUSER env vars")
-		SpringApplicationBuilder(InventoryBackendApplication::class.java)
-			.properties(
-				"spring.datasource.url=$jdbcUrl",
-				"spring.datasource.username=$pgUser",
-				"spring.datasource.password=${pgPassword.orEmpty()}"
-			)
-			.run(*args)
+		runApplication<InventoryBackendApplication>(
+			*args,
+			"--spring.datasource.url=$jdbcUrl",
+			"--spring.datasource.username=$pgUser",
+			"--spring.datasource.password=${pgPassword.orEmpty()}"
+		)
 		return
 	}
 
