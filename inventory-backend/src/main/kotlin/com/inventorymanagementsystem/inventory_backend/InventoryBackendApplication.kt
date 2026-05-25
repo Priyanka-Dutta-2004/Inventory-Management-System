@@ -53,6 +53,25 @@ fun main(args: Array<String>) {
 		}
 	}
 
+	val pgHost = env["PGHOST"]?.takeIf { it.isNotBlank() }
+	val pgPort = env["PGPORT"]?.takeIf { it.isNotBlank() } ?: "5432"
+	val pgDatabase = env["PGDATABASE"]?.takeIf { it.isNotBlank() }
+	val pgUser = env["PGUSER"]?.takeIf { it.isNotBlank() }
+	val pgPassword = env["PGPASSWORD"]?.takeIf { it.isNotBlank() }
+
+	if (pgHost != null && pgDatabase != null && pgUser != null) {
+		val jdbcUrl = "jdbc:postgresql://$pgHost:$pgPort/$pgDatabase"
+		println("Using database settings from PGHOST/PGPORT/PGDATABASE/PGUSER env vars")
+		SpringApplicationBuilder(InventoryBackendApplication::class.java)
+			.properties(
+				"spring.datasource.url=$jdbcUrl",
+				"spring.datasource.username=$pgUser",
+				"spring.datasource.password=${pgPassword.orEmpty()}"
+			)
+			.run(*args)
+		return
+	}
+
 	println("No supported DB URL env var found. Falling back to application.properties datasource settings.")
 	runApplication<InventoryBackendApplication>(*args)
 }
