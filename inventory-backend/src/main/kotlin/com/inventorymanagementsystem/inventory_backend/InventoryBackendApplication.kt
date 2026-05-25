@@ -10,35 +10,49 @@ class InventoryBackendApplication
 
 fun main(args: Array<String>) {
 	val env = System.getenv()
-	val databaseUrl = env["DATABASE_URL"]
-	val jdbcDatabaseUrl = env["JDBC_DATABASE_URL"]
-
-	if (!jdbcDatabaseUrl.isNullOrBlank()) {
-		SpringApplicationBuilder(InventoryBackendApplication::class.java)
-			.properties("spring.datasource.url=$jdbcDatabaseUrl")
-			.run(*args)
-		return
+	val urlCandidates = listOf(
+		"JDBC_DATABASE_URL",
+		"DATABASE_URL",
+		"INTERNAL_DATABASE_URL",
+		"EXTERNAL_DATABASE_URL"
+	)
+	val selected = urlCandidates.firstNotNullOfOrNull { key ->
+		env[key]?.takeIf { it.isNotBlank() }?.let { key to it }
 	}
 
-	if (!databaseUrl.isNullOrBlank() && !databaseUrl.startsWith("jdbc:", ignoreCase = true)) {
-		val uri = URI.create(databaseUrl)
-		val userInfo = uri.userInfo.orEmpty()
-		val username = userInfo.substringBefore(':')
-		val password = userInfo.substringAfter(':', "")
-		val host = uri.host
-		val port = if (uri.port == -1) 5432 else uri.port
-		val database = uri.path.removePrefix("/")
-		val jdbcUrl = "jdbc:postgresql://$host:$port/$database"
+	if (selected != null) {
+		val (key, rawUrl) = selected
+		println("Using database URL from env var: $key")
 
-		SpringApplicationBuilder(InventoryBackendApplication::class.java)
-			.properties(
-				"spring.datasource.url=$jdbcUrl",
-				"spring.datasource.username=$username",
-				"spring.datasource.password=$password"
-			)
-			.run(*args)
-		return
+		if (rawUrl.startsWith("jdbc:", ignoreCase = true)) {
+			SpringApplicationBuilder(InventoryBackendApplication::class.java)
+				.properties("spring.datasource.url=$rawUrl")
+				.run(*args)
+			return
+		}
+
+		if (rawUrl.startsWith("postgres://", ignoreCase = true) || rawUrl.startsWith("postgresql://", ignoreCase = true)) {
+			val uri = URI.create(rawUrl)
+			val userInfo = uri.userInfo.orEmpty()
+			val username = userInfo.substringBefore(':')
+			val password = userInfo.substringAfter(':', "")
+			val host = uri.host
+			val port = if (uri.port == -1) 5432 else uri.port
+			val database = uri.path.removePrefix("/")
+			val query = uri.query?.takeIf { it.isNotBlank() }?.let { "?$it" }.orEmpty()
+			val jdbcUrl = "jdbc:postgresql://$host:$port/$database$query"
+
+			SpringApplicationBuilder(InventoryBackendApplication::class.java)
+				.properties(
+					"spring.datasource.url=$jdbcUrl",
+					"spring.datasource.username=$username",
+					"spring.datasource.password=$password"
+				)
+				.run(*args)
+			return
+		}
 	}
 
+	println("No supported DB URL env var found. Falling back to application.properties datasource settings.")
 	runApplication<InventoryBackendApplication>(*args)
 }
