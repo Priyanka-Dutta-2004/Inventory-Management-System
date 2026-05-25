@@ -21,7 +21,8 @@ fun main(args: Array<String>) {
 	}
 
 	if (selected != null) {
-		val (key, rawUrl) = selected
+		val (key, rawUrlInput) = selected
+		val rawUrl = rawUrlInput.trim().removeSurrounding("\"").removeSurrounding("'")
 		println("Using database URL from env var: $key")
 
 		if (rawUrl.startsWith("jdbc:", ignoreCase = true)) {
@@ -51,6 +52,8 @@ fun main(args: Array<String>) {
 				.run(*args)
 			return
 		}
+
+		println("Unsupported DB URL format in $key. Value must start with jdbc:, postgres://, or postgresql://")
 	}
 
 	val pgHost = env["PGHOST"]?.takeIf { it.isNotBlank() }
