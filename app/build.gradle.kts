@@ -47,8 +47,7 @@ android {
 
     buildTypes {
         debug {
-            // Local IP for development on the same Wi-Fi
-            buildConfigField("String", "BACKEND_BASE_URL", "\"http://172.23.180.194:8080/\"")
+            buildConfigField("String", "BACKEND_BASE_URL", "\"https://inventory-management-system-t2ih.onrender.com/\"")
         }
         release {
             isMinifyEnabled = false
@@ -56,8 +55,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            // Replace with your production/deployed backend URL once you have it!
-            buildConfigField("String", "BACKEND_BASE_URL", "\"https://your-production-api.com/\"")
+            buildConfigField("String", "BACKEND_BASE_URL", "\"https://inventory-management-system-t2ih.onrender.com/\"")
         }
     }
 
