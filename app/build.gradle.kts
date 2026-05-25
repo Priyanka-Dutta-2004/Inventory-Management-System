@@ -1,3 +1,6 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -10,22 +13,51 @@ android {
 
     defaultConfig {
         applicationId = "com.example.inventorymanagementsystem"
-        minSdk = 27
+        minSdk = 26
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
-        buildConfigField("String", "BACKEND_BASE_URL", "\"http://172.23.180.194:8080/\"")
+
+        val localProperties = Properties()
+        val localPropertiesFile = rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) {
+            localProperties.load(FileInputStream(localPropertiesFile))
+        }
+        val smtpUsername = localProperties.getProperty("SMTP_USERNAME") ?: ""
+        val smtpPassword = localProperties.getProperty("SMTP_PASSWORD") ?: ""
+
+        buildConfigField("String", "SMTP_USERNAME", "\"$smtpUsername\"")
+        buildConfigField("String", "SMTP_PASSWORD", "\"$smtpPassword\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64"))
+        }
+    }
+
+    splits {
+        abi {
+            isEnable = true
+            reset()
+            include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
+            isUniversalApk = true
+        }
     }
 
     buildTypes {
+        debug {
+            // Local IP for development on the same Wi-Fi
+            buildConfigField("String", "BACKEND_BASE_URL", "\"http://172.23.180.194:8080/\"")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            // Replace with your production/deployed backend URL once you have it!
+            buildConfigField("String", "BACKEND_BASE_URL", "\"https://your-production-api.com/\"")
         }
     }
 
@@ -36,6 +68,13 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    packaging {
+        resources {
+            excludes += "META-INF/NOTICE.md"
+            excludes += "META-INF/LICENSE.md"
+        }
     }
 }
 
@@ -54,6 +93,8 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.recyclerview)
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.sun.mail:android-mail:1.6.7")
+    implementation("com.sun.mail:android-activation:1.6.7")
 
     testImplementation(libs.junit)
 

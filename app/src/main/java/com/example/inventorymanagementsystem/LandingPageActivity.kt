@@ -23,6 +23,7 @@ class LandingPageActivity : AppCompatActivity() {
         val userBtn = findViewById<Button>(R.id.userBtn)
         val adminBtn = findViewById<Button>(R.id.adminBtn)
         val managerBtn = findViewById<Button>(R.id.managerBtn)
+        val itSupportBtn = findViewById<Button>(R.id.itSupportBtn)
 
         userBtn.setOnClickListener {
             val intent = Intent(this, EmployeeLoginActivity::class.java)
@@ -36,6 +37,11 @@ class LandingPageActivity : AppCompatActivity() {
 
         adminBtn.setOnClickListener {
             val intent = Intent(this, AdminLoginActivity::class.java)
+            startActivity(intent)
+        }
+
+        itSupportBtn.setOnClickListener {
+            val intent = Intent(this, ITSupportLoginActivity::class.java)
             startActivity(intent)
         }
     }

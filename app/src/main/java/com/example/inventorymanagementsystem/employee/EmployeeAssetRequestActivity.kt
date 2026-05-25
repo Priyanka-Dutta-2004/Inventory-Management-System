@@ -25,11 +25,6 @@ class EmployeeAssetRequestActivity : AppCompatActivity() {
     private val displayDateFormatter: DateTimeFormatter =
         DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH)
 
-    private lateinit var requestTypeGroup: ChipGroup
-    private lateinit var chipLaptop: Chip
-    private lateinit var chipMonitor: Chip
-    private lateinit var chipAccessory: Chip
-    private lateinit var chipSoftware: Chip
     private lateinit var assetNameLayout: TextInputLayout
     private lateinit var assetNameInput: TextInputEditText
     private lateinit var justificationLayout: TextInputLayout
@@ -78,11 +73,6 @@ class EmployeeAssetRequestActivity : AppCompatActivity() {
     }
 
     private fun bindViews() {
-        requestTypeGroup = findViewById(R.id.requestTypeGroup)
-        chipLaptop = findViewById(R.id.chipLaptop)
-        chipMonitor = findViewById(R.id.chipMonitor)
-        chipAccessory = findViewById(R.id.chipAccessory)
-        chipSoftware = findViewById(R.id.chipSoftware)
         assetNameLayout = findViewById(R.id.assetNameLayout)
         assetNameInput = findViewById(R.id.assetNameInput)
         justificationLayout = findViewById(R.id.justificationLayout)
@@ -143,7 +133,6 @@ class EmployeeAssetRequestActivity : AppCompatActivity() {
             return
         }
 
-        setSelectedCategory(draft.category)
         assetNameInput.setText(draft.assetName)
         justificationInput.setText(draft.justification)
         if (draft.priority.isNotBlank()) {
@@ -160,7 +149,7 @@ class EmployeeAssetRequestActivity : AppCompatActivity() {
         EmployeeRequestRepository.saveDraft(
             context = this,
             draft = EmployeeAssetRequestDraft(
-                category = selectedCategory(),
+                category = null,
                 assetName = assetNameInput.text?.toString().orEmpty().trim(),
                 justification = justificationInput.text?.toString().orEmpty().trim(),
                 priority = priorityInput.text?.toString().orEmpty().trim(),
@@ -174,15 +163,10 @@ class EmployeeAssetRequestActivity : AppCompatActivity() {
     private fun submitRequest() {
         clearErrors()
 
-        val category = selectedCategory()
         val assetName = assetNameInput.text?.toString().orEmpty().trim()
         val justification = justificationInput.text?.toString().orEmpty().trim()
         val priority = priorityInput.text?.toString().orEmpty().trim()
 
-        if (category == null) {
-            Toast.makeText(this, R.string.employee_request_error_type_required, Toast.LENGTH_SHORT).show()
-            return
-        }
         if (assetName.isBlank()) {
             assetNameLayout.error = getString(R.string.employee_request_error_asset_name_required)
             assetNameInput.requestFocus()
@@ -208,7 +192,7 @@ class EmployeeAssetRequestActivity : AppCompatActivity() {
         val savedRequest = EmployeeRequestRepository.saveSubmittedRequest(
             context = this,
             session = EmployeeSessionManager.getSession(this),
-            category = category,
+            category = "",
             assetName = assetName,
             justification = justification,
             priority = priority,
@@ -248,7 +232,6 @@ class EmployeeAssetRequestActivity : AppCompatActivity() {
     }
 
     private fun clearForm() {
-        requestTypeGroup.clearCheck()
         assetNameInput.text = null
         justificationInput.text = null
         priorityInput.setText(getString(R.string.employee_request_priority_medium), false)
@@ -266,22 +249,4 @@ class EmployeeAssetRequestActivity : AppCompatActivity() {
         neededByLayout.error = null
     }
 
-    private fun selectedCategory(): String? {
-        return when (requestTypeGroup.checkedChipId) {
-            R.id.chipLaptop -> chipLaptop.text.toString()
-            R.id.chipMonitor -> chipMonitor.text.toString()
-            R.id.chipAccessory -> chipAccessory.text.toString()
-            R.id.chipSoftware -> chipSoftware.text.toString()
-            else -> null
-        }
-    }
-
-    private fun setSelectedCategory(category: String?) {
-        when (category?.trim()?.lowercase(Locale.ENGLISH)) {
-            chipLaptop.text.toString().lowercase(Locale.ENGLISH) -> chipLaptop.isChecked = true
-            chipMonitor.text.toString().lowercase(Locale.ENGLISH) -> chipMonitor.isChecked = true
-            chipAccessory.text.toString().lowercase(Locale.ENGLISH) -> chipAccessory.isChecked = true
-            chipSoftware.text.toString().lowercase(Locale.ENGLISH) -> chipSoftware.isChecked = true
-        }
-    }
 }

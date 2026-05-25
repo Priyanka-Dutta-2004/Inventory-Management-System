@@ -2,6 +2,8 @@ package com.example.inventorymanagementsystem.employee
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.LinearLayout
@@ -9,6 +11,7 @@ import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import android.widget.PopupMenu
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.inventorymanagementsystem.LandingPageActivity
@@ -23,6 +26,15 @@ class EmployeeDashboardActivity : AppCompatActivity() {
     private lateinit var alertsValue: TextView
     private lateinit var recentRequestsContainer: LinearLayout
 
+    private val handler = Handler(Looper.getMainLooper())
+    private val refreshInterval = 10_000L
+    private val refreshRunnable = object : Runnable {
+        override fun run() {
+            renderDashboard()
+            handler.postDelayed(this, refreshInterval)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -30,6 +42,12 @@ class EmployeeDashboardActivity : AppCompatActivity() {
 
         val toolbar = findViewById<Toolbar>(R.id.topAppBar)
         setSupportActionBar(toolbar)
+        toolbar.setNavigationOnClickListener { v ->
+            val popup = PopupMenu(this, v)
+            popup.menuInflater.inflate(R.menu.user_menu, popup.menu)
+            popup.setOnMenuItemClickListener { item -> onOptionsItemSelected(item) }
+            popup.show()
+        }
         bindViews()
         renderDashboard()
 
@@ -49,6 +67,15 @@ class EmployeeDashboardActivity : AppCompatActivity() {
             startActivity(Intent(this, EmployeeNearExpiryActivity::class.java))
         }
 
+        // Try to find and set maintenance button if it exists
+        val maintenanceId = resources.getIdentifier("cardMaintenance", "id", packageName)
+        if (maintenanceId != 0) {
+            val maintenanceCard = findViewById<MaterialCardView>(maintenanceId)
+            maintenanceCard?.setOnClickListener {
+                startActivity(Intent(this, EmployeeMaintenanceRequestActivity::class.java))
+            }
+        }
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -59,6 +86,12 @@ class EmployeeDashboardActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         renderDashboard()
+        handler.post(refreshRunnable)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        handler.removeCallbacks(refreshRunnable)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -68,6 +101,22 @@ class EmployeeDashboardActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            R.id.action_browse_assets -> {
+                startActivity(Intent(this, EmployeeAssetRequestActivity::class.java))
+                true
+            }
+            R.id.action_my_items -> {
+                startActivity(Intent(this, EmployeeMyAssetsActivity::class.java))
+                true
+            }
+            R.id.action_report_issue -> {
+                startActivity(Intent(this, EmployeeIssueReportActivity::class.java))
+                true
+            }
+            R.id.action_view_history -> {
+                startActivity(Intent(this, EmployeeNearExpiryActivity::class.java))
+                true
+            }
             R.id.action_logout -> {
                 logout()
                 true

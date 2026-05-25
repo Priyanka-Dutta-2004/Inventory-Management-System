@@ -25,6 +25,7 @@ class DataSeeder {
             val adminRole = ensureRole(roleRepository, "ADMIN")
             val managerRole = ensureRole(roleRepository, "MANAGER")
             val employeeRole = ensureRole(roleRepository, "EMPLOYEE")
+            val itSupportRole = ensureRole(roleRepository, "IT_SUPPORT")
 
             ensureUser(
                 userRepository = userRepository,
@@ -46,6 +47,13 @@ class DataSeeder {
                 email = "user@ims.com",
                 password = "user123",
                 role = employeeRole,
+            )
+            ensureUser(
+                userRepository = userRepository,
+                name = "IT Support",
+                email = "itsupport@ims.com",
+                password = "itsupport123",
+                role = itSupportRole,
             )
 
             ensureInventoryAsset(
@@ -170,6 +178,7 @@ class DataSeeder {
                         category = category,
                         location = location,
                         assignedTo = normalizedAssignedTo,
+                        
                         status = status,
                         condition = condition,
                         warrantyEndDate = warrantyDate,

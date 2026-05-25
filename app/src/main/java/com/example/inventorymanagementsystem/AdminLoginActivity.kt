@@ -63,6 +63,14 @@ class AdminLoginActivity : AppCompatActivity() {
             onSuccess = {
                 runOnUiThread {
                     loginButton.isEnabled = true
+                    // Save session for admin user
+                    com.example.inventorymanagementsystem.employee.EmployeeSessionManager.saveSession(
+                        context = this,
+                        userId = it.userId,
+                        name = it.name,
+                        email = it.email,
+                        role = it.role,
+                    )
                     Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
                     navigateToDashboard()
                 }

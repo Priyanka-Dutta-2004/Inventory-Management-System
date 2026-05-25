@@ -43,4 +43,8 @@
     <color name="surface_white">#FCFDFE</color>
     <color name="border_soft">#D7E0EA</color>
 
+    <!-- Light Variants -->
+    <color name="primary_light">#EAF3FB</color>
+    <color name="accent_light">#E6F8FF</color>
+
 </resources>

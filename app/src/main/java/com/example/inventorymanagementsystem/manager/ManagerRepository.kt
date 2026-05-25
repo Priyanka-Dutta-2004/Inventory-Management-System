@@ -121,7 +121,12 @@ object ManagerRepository {
             decidedAt = LocalDateTime.now(),
         )
         persistDecision(context, requestId, savedDecision)
-        EmployeeRequestRepository.updateRequestStatus(context, requestId, decision.toStatusLabel())
+        // When manager approves, escalate to admin for final acceptance; otherwise set the final label
+        val targetStatus = when (decision) {
+            ManagerRequestDecision.APPROVED -> "Pending admin review"
+            else -> decision.toStatusLabel()
+        }
+        EmployeeRequestRepository.updateRequestStatus(context, requestId, targetStatus)
         return current.copy(
             decision = decision,
             managerComment = savedDecision.comment,
@@ -130,74 +135,7 @@ object ManagerRepository {
     }
 
     fun getTeamAssets(): List<ManagerTeamAsset> {
-        return listOf(
-            ManagerTeamAsset(
-                assetId = "LAP-2026-014",
-                name = "Dell Latitude 5440",
-                category = "Laptop",
-                owner = "Arjun Rao",
-                department = "Engineering",
-                location = "Workspace E-14",
-                status = "In use",
-                coverageType = "Warranty",
-                coverageEndDate = LocalDate.now().plusMonths(8),
-            ),
-            ManagerTeamAsset(
-                assetId = "MON-2025-067",
-                name = "LG UltraFine 27-inch Monitor",
-                category = "Monitor",
-                owner = "Neha Patel",
-                department = "Finance",
-                location = "Bay F-08",
-                status = "In use",
-                coverageType = "AMC",
-                coverageEndDate = LocalDate.now().plusDays(18),
-            ),
-            ManagerTeamAsset(
-                assetId = "NET-2025-022",
-                name = "Cisco Access Switch",
-                category = "Networking",
-                owner = "Infrastructure",
-                department = "IT Operations",
-                location = "Server Room B",
-                status = "Maintenance",
-                coverageType = "Support",
-                coverageEndDate = LocalDate.now().plusDays(74),
-            ),
-            ManagerTeamAsset(
-                assetId = "MOB-2026-009",
-                name = "Samsung Galaxy S24",
-                category = "Mobile",
-                owner = "Isha Mehta",
-                department = "Sales",
-                location = "Field assignment",
-                status = "In use",
-                coverageType = "Insurance",
-                coverageEndDate = LocalDate.now().plusMonths(5),
-            ),
-            ManagerTeamAsset(
-                assetId = "ACC-2026-114",
-                name = "Dell WD19 Dock",
-                category = "Accessory",
-                owner = "Unassigned",
-                department = "Engineering",
-                location = "Store Room A",
-                status = "Available",
-                coverageType = "Warranty",
-                coverageEndDate = LocalDate.now().plusMonths(14),
-            ),
-            ManagerTeamAsset(
-                assetId = "LAP-2024-044",
-                name = "HP EliteBook 840",
-                category = "Laptop",
-                owner = "Rohan Sharma",
-                department = "Finance",
-                location = "Workspace F-11",
-                status = "Expiring soon",
-                coverageType = "Warranty",
-                coverageEndDate = LocalDate.now().plusDays(11),
-            ),
-        ).sortedBy { it.coverageEndDate }
+        return emptyList()
     }
 
     fun buildSummary(context: Context): ManagerReportSummary {
@@ -306,36 +244,7 @@ object ManagerRepository {
     fun formatDecisionDateTime(value: LocalDateTime): String = value.format(displayDateTimeFormatter)
 
     private fun seededRequests(): List<ManagerRequestRecord> {
-        return listOf(
-            ManagerRequestRecord(
-                id = 9001L,
-                employeeName = "Neha Patel",
-                employeeEmail = "neha.patel@company.com",
-                category = "Laptop bundle",
-                assetName = "Finance onboarding kit",
-                justification = "Four analysts are joining and need standard laptops, docking stations, and headsets before onboarding.",
-                priority = "High",
-                neededBy = LocalDate.now().plusDays(5),
-                createdAt = LocalDate.now().minusDays(2),
-                decision = ManagerRequestDecision.PENDING,
-                managerComment = null,
-                decidedAt = null,
-            ),
-            ManagerRequestRecord(
-                id = 9002L,
-                employeeName = "Arjun Rao",
-                employeeEmail = "arjun.rao@company.com",
-                category = "Replacement",
-                assetName = "Replacement laptop request",
-                justification = "Current device is under maintenance and a temporary replacement is needed to avoid project delays.",
-                priority = "Critical",
-                neededBy = LocalDate.now().plusDays(1),
-                createdAt = LocalDate.now().minusDays(1),
-                decision = ManagerRequestDecision.PENDING,
-                managerComment = null,
-                decidedAt = null,
-            ),
-        )
+        return emptyList()
     }
 
     private fun normalizeReportType(value: String): String {
@@ -396,6 +305,8 @@ object ManagerRepository {
     private fun String.toDecision(): ManagerRequestDecision {
         return when (trim().uppercase(Locale.ENGLISH)) {
             "APPROVED" -> ManagerRequestDecision.APPROVED
+            "FULFILLED" -> ManagerRequestDecision.APPROVED
+            "ASSIGNED" -> ManagerRequestDecision.APPROVED
             "REJECTED" -> ManagerRequestDecision.REJECTED
             "PENDING MANAGER REVIEW", "PENDING" -> ManagerRequestDecision.PENDING
             else -> ManagerRequestDecision.PENDING

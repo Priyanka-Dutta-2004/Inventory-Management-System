@@ -100,55 +100,17 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/employee_request_need_label"
+                        android:text="@string/employee_request_asset_name"
                         android:textColor="@color/primary_dark"
                         android:textSize="16sp"
                         android:textStyle="bold" />
-
-                    <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/requestTypeGroup"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        app:chipSpacingHorizontal="8dp"
-                        app:chipSpacingVertical="8dp"
-                        app:singleSelection="true">
-
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chipLaptop"
-                            style="@style/Widget.Material3.Chip.Assist"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/employee_request_laptop" />
-
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chipMonitor"
-                            style="@style/Widget.Material3.Chip.Assist"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/employee_request_monitor" />
-
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chipAccessory"
-                            style="@style/Widget.Material3.Chip.Assist"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/employee_request_peripheral" />
-
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chipSoftware"
-                            style="@style/Widget.Material3.Chip.Assist"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/employee_request_software" />
-                    </com.google.android.material.chip.ChipGroup>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/assetNameLayout"
                         style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="18dp"
+                        android:layout_marginTop="12dp"
                         android:hint="@string/employee_request_asset_name">
 
                         <com.google.android.material.textfield.TextInputEditText

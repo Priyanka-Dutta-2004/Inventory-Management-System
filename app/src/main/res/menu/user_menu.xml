@@ -3,6 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_browse_assets"
+        android:title="Browse Assets"
+        android:orderInCategory="10"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_my_items"
+        android:title="My Items"
+        android:orderInCategory="20"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_report_issue"
+        android:title="Report Issue"
+        android:orderInCategory="30"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_view_history"
+        android:title="View History"
+        android:orderInCategory="40"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_profile"
         android:title="Profile"
         android:orderInCategory="100"

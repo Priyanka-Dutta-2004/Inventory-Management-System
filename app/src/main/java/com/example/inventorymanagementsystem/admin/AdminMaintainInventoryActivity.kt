@@ -1,5 +1,6 @@
 package com.example.inventorymanagementsystem.admin
 
+import android.app.DatePickerDialog
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
@@ -22,12 +23,15 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.inventorymanagementsystem.R
+import com.example.inventorymanagementsystem.employee.EmployeeRequestRepository
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class AdminMaintainInventoryActivity : AppCompatActivity() {
     private lateinit var searchInventoryInput: TextInputEditText
@@ -285,8 +289,25 @@ class AdminMaintainInventoryActivity : AppCompatActivity() {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_inventory_transfer, null)
         val locationInput = dialogView.findViewById<TextInputEditText>(R.id.etTransferLocation)
         val assignedToInput = dialogView.findViewById<TextInputEditText>(R.id.etTransferAssignee)
+        val assignedUntilInput = dialogView.findViewById<TextInputEditText>(R.id.etAssignedUntil)
         locationInput.setText(asset.location)
         assignedToInput.setText(asset.assignedTo.orEmpty())
+
+        var selectedAssignedUntil: LocalDate? = null
+        val isoFormatter = DateTimeFormatter.ISO_LOCAL_DATE
+        assignedUntilInput.setOnClickListener {
+            val now = LocalDate.now()
+            DatePickerDialog(
+                this,
+                { _, year, month, dayOfMonth ->
+                    selectedAssignedUntil = LocalDate.of(year, month + 1, dayOfMonth)
+                    assignedUntilInput.setText(selectedAssignedUntil?.format(isoFormatter))
+                },
+                now.year,
+                now.monthValue - 1,
+                now.dayOfMonth,
+            ).show()
+        }
 
         val dialog = MaterialAlertDialogBuilder(this)
             .setTitle(getString(R.string.admin_inventory_transfer_title, asset.assetId))
@@ -299,6 +320,8 @@ class AdminMaintainInventoryActivity : AppCompatActivity() {
             dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                 val location = locationInput.text?.toString()?.trim().orEmpty()
                 val assignedTo = assignedToInput.text?.toString()?.trim()?.takeIf { it.isNotBlank() }
+                val assignedUntilStr = selectedAssignedUntil?.format(isoFormatter)
+
                 if (location.isBlank()) {
                     showToast(getString(R.string.admin_inventory_location_required))
                     return@setOnClickListener
@@ -309,11 +332,60 @@ class AdminMaintainInventoryActivity : AppCompatActivity() {
                     id = asset.id,
                     location = location,
                     assignedTo = assignedTo,
-                    onSuccess = {
-                        runOnUiThread {
-                            dialog.dismiss()
-                            loadDashboard(showLoader = true)
-                            showToast(getString(R.string.admin_inventory_transfer_success))
+                    onSuccess = { transferredAsset ->
+                        // If admin specified an "until" date, append it to asset notes and update the asset
+                        if (!assignedUntilStr.isNullOrBlank()) {
+                            val newNotes = (transferredAsset.notes + "\nAssigned until: $assignedUntilStr").trim()
+                            val request = InventoryAssetRequest(
+                                assetId = transferredAsset.assetId,
+                                name = transferredAsset.name,
+                                category = transferredAsset.category,
+                                location = transferredAsset.location,
+                                assignedTo = transferredAsset.assignedTo,
+                                status = transferredAsset.status,
+                                condition = transferredAsset.condition,
+                                warrantyEndDate = transferredAsset.warrantyEndDate,
+                                lastAuditDate = transferredAsset.lastAuditDate,
+                                notes = newNotes,
+                            )
+                            AdminInventoryApiClient.updateAsset(
+                                id = transferredAsset.id,
+                                request = request,
+                                onSuccess = {
+                                    runOnUiThread {
+                                        dialog.dismiss()
+                                        loadDashboard(showLoader = true)
+                                        showToast(getString(R.string.admin_inventory_transfer_success))
+                                        // Mark manager requests as assigned for this employee
+                                        if (!assignedTo.isNullOrBlank()) {
+                                            val submitted = EmployeeRequestRepository.getSubmittedRequests(this)
+                                            submitted.filter { it.employeeName.equals(assignedTo, ignoreCase = true) && (it.status.equals("Approved", ignoreCase = true) || it.status.equals("Pending admin review", ignoreCase = true)) }
+                                                .forEach { req ->
+                                                    EmployeeRequestRepository.updateRequestStatus(this, req.id, "Assigned until $assignedUntilStr")
+                                                }
+                                        }
+                                    }
+                                },
+                                onError = { message ->
+                                    runOnUiThread {
+                                        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).isEnabled = true
+                                        showToast(message)
+                                    }
+                                }
+                            )
+                        } else {
+                            runOnUiThread {
+                                dialog.dismiss()
+                                loadDashboard(showLoader = true)
+                                showToast(getString(R.string.admin_inventory_transfer_success))
+                                if (!assignedTo.isNullOrBlank()) {
+                                    val submitted = EmployeeRequestRepository.getSubmittedRequests(this)
+                                    submitted.filter { it.employeeName.equals(assignedTo, ignoreCase = true) && (it.status.equals("Approved", ignoreCase = true) || it.status.equals("Pending admin review", ignoreCase = true)) }
+                                        .forEach { req ->
+                                            EmployeeRequestRepository.updateRequestStatus(this, req.id, "Assigned")
+                                        }
+                                }
+                            }
                         }
                     },
                     onError = { message ->

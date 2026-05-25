@@ -156,15 +156,22 @@ class AdminReportActivity : AppCompatActivity() {
             return
         }
 
-        getSystemService<ClipboardManager>()?.setPrimaryClip(
-            ClipData.newPlainText(preview.title, preview.exportText)
-        )
-        MaterialAlertDialogBuilder(this)
-            .setTitle(getString(R.string.admin_report_export_title, preview.title))
-            .setMessage(preview.exportText)
-            .setPositiveButton(R.string.admin_report_export_done, null)
-            .show()
-        showToast(getString(R.string.admin_report_export_copied))
+        try {
+            val title = preview.title
+            val meta = buildPreviewMeta(preview)
+            val body = preview.exportText
+            val file = com.example.inventorymanagementsystem.PdfUtil.createPdf(this, title.replace("\\s+".toRegex(), "_"), title, meta, body)
+            val uri = com.example.inventorymanagementsystem.PdfUtil.getUriForFile(this, file)
+            val share = android.content.Intent(android.content.Intent.ACTION_SEND).apply {
+                type = "application/pdf"
+                putExtra(android.content.Intent.EXTRA_STREAM, uri)
+                addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            startActivity(android.content.Intent.createChooser(share, "Share PDF"))
+        } catch (e: Exception) {
+            e.printStackTrace()
+            showToast(getString(R.string.admin_report_export_copied))
+        }
     }
 
     private fun buildPreviewMeta(preview: AdminReportPreview): String {

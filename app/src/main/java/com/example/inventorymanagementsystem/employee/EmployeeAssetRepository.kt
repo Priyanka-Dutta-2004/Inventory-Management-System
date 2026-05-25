@@ -41,44 +41,7 @@ object EmployeeAssetRepository {
 
     fun getAssets(session: EmployeeSession?): List<EmployeeAsset> {
         val location = session?.name?.takeIf { it.isNotBlank() }?.let { "$it workspace" } ?: "Desk B12"
-        return listOf(
-            EmployeeAsset(
-                name = "Dell Latitude 5440",
-                assetId = "LAP-2026-014",
-                category = "Laptop",
-                assignedDate = LocalDate.of(2026, 1, 5),
-                coverageType = "Warranty",
-                coverageEndDate = LocalDate.of(2027, 1, 12),
-                location = location,
-                statusLabel = "In use",
-                state = EmployeeAssetState.HEALTHY,
-                tags = listOf("Primary device", "Warranty active"),
-            ),
-            EmployeeAsset(
-                name = "LG UltraFine 27-inch Monitor",
-                assetId = "MON-2025-067",
-                category = "Monitor",
-                assignedDate = LocalDate.of(2025, 11, 19),
-                coverageType = "AMC",
-                coverageEndDate = LocalDate.of(2026, 4, 28),
-                location = "Finance Bay B12",
-                statusLabel = "Workstation",
-                state = EmployeeAssetState.ATTENTION,
-                tags = listOf("Desk setup", "Expiry soon"),
-            ),
-            EmployeeAsset(
-                name = "Samsung Galaxy S24",
-                assetId = "MOB-2026-009",
-                category = "Mobile",
-                assignedDate = LocalDate.of(2026, 2, 10),
-                coverageType = "Insurance",
-                coverageEndDate = LocalDate.of(2026, 12, 18),
-                location = "Corporate SIM enabled",
-                statusLabel = "Mobile",
-                state = EmployeeAssetState.HEALTHY,
-                tags = listOf("Travel ready", "Good condition"),
-            ),
-        )
+        return emptyList()
     }
 
     fun buildSummary(assets: List<EmployeeAsset>): EmployeeAssetSummary {

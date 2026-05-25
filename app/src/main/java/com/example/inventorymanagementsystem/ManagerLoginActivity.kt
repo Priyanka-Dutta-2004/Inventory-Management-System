@@ -60,6 +60,14 @@ class ManagerLoginActivity : AppCompatActivity() {
             onSuccess = {
                 runOnUiThread {
                     loginButton.isEnabled = true
+                    // Save session so the manager remains logged in and can access manager resources
+                    com.example.inventorymanagementsystem.employee.EmployeeSessionManager.saveSession(
+                        context = this,
+                        userId = it.userId,
+                        name = it.name,
+                        email = it.email,
+                        role = it.role,
+                    )
                     Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
                     navigateToDashboard()
                 }

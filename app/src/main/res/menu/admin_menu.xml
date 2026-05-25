@@ -3,6 +3,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_add_item"
+        android:title="Add Item"
+        android:orderInCategory="10"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_maintain_users"
+        android:title="Maintain Users"
+        android:orderInCategory="20"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_maintain_inventory"
+        android:title="Maintain Inventory"
+        android:orderInCategory="30"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_reports"
+        android:title="Reports"
+        android:orderInCategory="40"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_accept_requests"
+        android:title="Accept Requests"
+        android:orderInCategory="50"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_profile"
         android:title="Profile"
         android:orderInCategory="100"

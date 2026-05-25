@@ -149,6 +149,7 @@
     <string name="admin_inventory_category_label">Category</string>
     <string name="admin_inventory_location_label">Location</string>
     <string name="admin_inventory_assigned_to_label">Assigned to</string>
+    <string name="admin_inventory_assigned_until_label">Assigned until (YYYY-MM-DD)</string>
     <string name="admin_inventory_status_label">Status</string>
     <string name="admin_inventory_condition_label">Condition</string>
     <string name="admin_inventory_warranty_label">Warranty end date (YYYY-MM-DD)</string>
@@ -213,4 +214,20 @@
     <string name="manager_report_pending_assets">Pending approvals</string>
     <string name="manager_report_expiring_assets">Expiring soon</string>
     <string name="manager_report_maintenance_assets">Maintenance</string>
+    <string name="it_support_asset_allocation_title">IT Asset Fulfillment</string>
+    <string name="it_support_available_inventory">Available inventory</string>
+    <string name="it_support_pending_requests">Pending requests</string>
+    <string name="it_support_inventory_header">Inventory added by admin</string>
+    <string name="it_support_inventory_search_hint">Search asset ID, name, category, location, status</string>
+    <string name="it_support_inventory_empty">No inventory matches this search.</string>
+    <string name="it_support_requests_header">Approved requests to fulfill</string>
+    <string name="it_support_requests_empty">No approved requests are waiting for IT support.</string>
+    <string name="it_support_assign_asset">Assign Asset</string>
+    <string name="it_support_no_available_assets">No available assets to assign.</string>
+    <string name="it_support_assign_dialog_title">Assign asset for %1$s</string>
+    <string name="it_support_request_update_failed">Failed to update the request state.</string>
+    <string name="it_support_assign_success">%1$s assigned to %2$s</string>
+    <string name="it_support_inventory_meta">%1$s | %2$s | %3$s</string>
+    <string name="it_support_request_employee">Employee: %1$s</string>
+    <string name="it_support_request_meta">Priority %1$s | Needed by %2$s</string>
 </resources>

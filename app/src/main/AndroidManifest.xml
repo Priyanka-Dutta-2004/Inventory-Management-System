@@ -51,6 +51,12 @@
             android:name=".manager.ManagerAcceptRequestsActivity"
             android:exported="false" />
         <activity
+            android:name=".admin.AdminAcceptRequestsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.AdminRequestDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".manager.ManagerDashboardActivity"
             android:exported="false" />
         <activity
@@ -69,6 +75,27 @@
             android:name=".employee.EmployeeDashboardActivity"
             android:exported="false" />
         <activity
+            android:name=".ITSupportLoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".itsupport.ITSupportDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".itsupport.ITSupportAssetAllocationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".itsupport.ManualMaintenanceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".itsupport.ScheduledMaintenanceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".itsupport.MaintenanceTicketDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".employee.EmployeeMaintenanceRequestActivity"
+            android:exported="false" />
+        <activity
             android:name=".LandingPageActivity"
             android:exported="true">
             <intent-filter>
@@ -77,6 +104,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

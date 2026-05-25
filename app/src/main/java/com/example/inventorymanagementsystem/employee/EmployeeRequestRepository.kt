@@ -17,6 +17,8 @@ data class EmployeeAssetRequestRecord(
     val neededBy: LocalDate,
     val status: String,
     val createdAt: LocalDate,
+    val fulfilledAssetId: String? = null,
+    val fulfilledAt: LocalDate? = null,
 )
 
 data class EmployeeAssetRequestDraft(
@@ -117,6 +119,36 @@ object EmployeeRequestRepository {
         return true
     }
 
+    fun getRequestsPendingItSupport(context: Context): List<EmployeeAssetRequestRecord> {
+        return getSubmittedRequests(context)
+            .filter { it.status.equals("Approved", ignoreCase = true) }
+            .sortedWith(
+                compareByDescending<EmployeeAssetRequestRecord> { it.createdAt }
+                    .thenByDescending { it.id }
+            )
+    }
+
+    fun markRequestFulfilled(
+        context: Context,
+        requestId: Long,
+        assetId: String,
+    ): Boolean {
+        val preferences = context.getSharedPreferences(preferencesName, Context.MODE_PRIVATE)
+        val requests = getSubmittedRequests(context).toMutableList()
+        val index = requests.indexOfFirst { it.id == requestId }
+        if (index == -1) return false
+
+        requests[index] = requests[index].copy(
+            status = "Fulfilled",
+            fulfilledAssetId = assetId,
+            fulfilledAt = LocalDate.now(),
+        )
+        preferences.edit()
+            .putString(keyRequests, JSONArray(requests.map(::requestToJson)).toString())
+            .apply()
+        return true
+    }
+
     private fun draftToJson(draft: EmployeeAssetRequestDraft): JSONObject {
         return JSONObject()
             .put("category", draft.category)
@@ -148,6 +180,8 @@ object EmployeeRequestRepository {
             .put("neededBy", request.neededBy.format(dateFormatter))
             .put("status", request.status)
             .put("createdAt", request.createdAt.format(dateFormatter))
+            .put("fulfilledAssetId", request.fulfilledAssetId)
+            .put("fulfilledAt", request.fulfilledAt?.format(dateFormatter))
     }
 
     private fun jsonToRequest(json: JSONObject): EmployeeAssetRequestRecord {
@@ -162,6 +196,9 @@ object EmployeeRequestRepository {
             neededBy = LocalDate.parse(json.getString("neededBy"), dateFormatter),
             status = json.optString("status"),
             createdAt = LocalDate.parse(json.getString("createdAt"), dateFormatter),
+            fulfilledAssetId = json.optString("fulfilledAssetId").takeIf { it.isNotBlank() },
+            fulfilledAt = json.optString("fulfilledAt").takeIf { it.isNotBlank() }
+                ?.let(LocalDate::parse),
         )
     }
 }
